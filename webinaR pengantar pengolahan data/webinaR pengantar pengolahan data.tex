@@ -1,0 +1,2682 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{webinaR pengantar pengolahan data}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    {©} 2020 \textbar{} Sandy H.S. Herho dan Dasapta E. Irawan
+
+    \hypertarget{apa-itu-r}{%
+\section{Apa itu R?}\label{apa-itu-r}}
+
+    R merupakan bahasa pemrograman dan lingkungan perangkat lunak yang
+digunakan untuk analisis statistik, pemodelan data, visualiasi grafik,
+dan pelaporan data. R bersifat sumber terbuka dan gratis diunduh oleh
+siapapun. Webinar ini ditujukan untuk membantu pemula untuk memulai
+pengolahan data dengan menggunakan R.
+
+    \hypertarget{instalasi}{%
+\section{Instalasi}\label{instalasi}}
+
+    \begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Kunjungi
+  https://docs.conda.io/projects/conda/en/latest/user-guide/install/
+  untuk instalasi Miniconda versi 3.
+\item
+  Ikuti prosedur instalasi (jangan lupa atur PATH -nya).
+\item
+  Buku \emph{Command Line Interface} (CLI), jalankan:
+\end{enumerate}
+
+\begin{verbatim}
+conda create -n enviRonment r-essential r-base
+\end{verbatim}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  Aktifkan lingkungan virtual dengan menjalankan perintah:
+\end{enumerate}
+
+\begin{verbatim}
+conda activate enviRonment
+\end{verbatim}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{4}
+\tightlist
+\item
+  Lakukan instalasi Jupyter Notebook:
+\end{enumerate}
+
+\begin{verbatim}
+conda install -c anaconda jupyter
+\end{verbatim}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{5}
+\tightlist
+\item
+  Lakukan instalasi IRkernel:
+\end{enumerate}
+
+\begin{verbatim}
+conda install -c r r-irkernel
+\end{verbatim}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{6}
+\tightlist
+\item
+  Jalankan perintah:
+\end{enumerate}
+
+\begin{verbatim}
+jupyter notebook
+\end{verbatim}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{7}
+\tightlist
+\item
+  Jika sudah terbuka di \emph{browser} masing - masing sesi R interaktif
+  dapat dimulai.
+\item
+  Untuk mengakhiri sesi tekan tombol
+  \texttt{\textless{}CTRL\textgreater{}\ +\ C} di CLI, dan jalankan
+  perintah: \texttt{(bash)\ \ \ \ \ conda\ deactivate}
+\end{enumerate}
+
+    \hypertarget{pengantar}{%
+\section{PengantaR}\label{pengantar}}
+
+    \hypertarget{tipe---tipe-data}{%
+\subsection{Tipe - tipe data}\label{tipe---tipe-data}}
+
+    \begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Logical : \texttt{TRUE}, \texttt{FALSE}
+\item
+  Numeric: \texttt{1}, \texttt{1.2}, \texttt{1239}
+\item
+  Integer: \texttt{2},\texttt{3},\texttt{5},\texttt{6}
+\item
+  Complex: \texttt{4\ +\ 3i}
+\item
+  Character: \texttt{"Halo"},
+  \texttt{\textquotesingle{}Halo\textquotesingle{}}
+\item
+  Raw: Bytes
+\end{enumerate}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{a} \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kc}{TRUE}
+\PY{n}{a} \PY{o}{=} \PY{l+m}{10}
+\PY{n}{a} \PY{o}{\PYZlt{}\PYZhy{}} \PY{l+m}{3} \PY{o}{+} \PY{l+m}{4i}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{print}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[1] 3+4i
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{class}\PY{p}{(}\PY{n}{a}\PY{p}{)} \PY{c+c1}{\PYZsh{} a nerupakan bagian dari kelas ??}
+\end{Verbatim}
+\end{tcolorbox}
+
+    'complex'
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{b} \PY{o}{\PYZlt{}\PYZhy{}} \PY{l+m}{5}
+\PY{n+nf}{class}\PY{p}{(}\PY{n}{b}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    'numeric'
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{c} \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kc}{FALSE}
+\PY{n+nf}{class}\PY{p}{(}\PY{n}{c}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    'logical'
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{d} \PY{o}{\PYZlt{}\PYZhy{}} \PY{l+m}{3L} 
+\PY{n+nf}{class}\PY{p}{(}\PY{n}{d}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    'integer'
+
+    
+    Secara \emph{default}, seluruh bilangan yang kita tugaskan ke dalam
+suatu variabel akan berupa tipe data numerik. Jika kita ingin menjadikan
+bilangan tersebut integer, gunakan \texttt{L}.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{teks} \PY{o}{\PYZlt{}\PYZhy{}} \PY{l+s}{\PYZdq{}}\PY{l+s}{Halo apa kabar?\PYZdq{}}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{jawaban} \PY{o}{\PYZlt{}\PYZhy{}} \PY{l+s}{\PYZsq{}}\PY{l+s}{Baik baik, Bro!\PYZsq{}}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{teks}
+\end{Verbatim}
+\end{tcolorbox}
+
+    'Halo apa kabar?'
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{class}\PY{p}{(}\PY{n}{teks}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    'character'
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{class}\PY{p}{(}\PY{n}{jawaban}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    'character'
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{a} \PY{o}{\PYZlt{}\PYZhy{}} \PY{n+nf}{charToRaw}\PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{Mohon maaf lahir batin Mas bro!\PYZsq{}}\PY{p}{)}
+\PY{n}{a}
+\end{Verbatim}
+\end{tcolorbox}
+
+    
+    \begin{verbatim}
+ [1] 4d 6f 68 6f 6e 20 6d 61 61 66 20 6c 61 68 69 72 20 62 61 74 69 6e 20 4d 61
+[26] 73 20 62 72 6f 21
+    \end{verbatim}
+
+    
+    \texttt{a} merupakan representasi bagaimana tipe data character disimpan
+secara internal di dalam memori komputer.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{class}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    'raw'
+
+    
+    \hypertarget{struktur-data}{%
+\subsection{Struktur data}\label{struktur-data}}
+
+    Koleksi dari tipe - tipe data.
+
+\begin{itemize}
+\tightlist
+\item
+  Vectors
+\item
+  Lists
+\item
+  Matrix
+\item
+  Arrays
+\item
+  Data Frames
+\item
+  Factors
+\end{itemize}
+
+    \hypertarget{pengantar-vektor}{%
+\subsubsection{Pengantar Vektor}\label{pengantar-vektor}}
+
+    Koleksi dari objek - objek dengan tipe data yg sama.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{kendaraan} \PY{o}{\PYZlt{}\PYZhy{}} \PY{n+nf}{c}\PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{mobil\PYZsq{}}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{sepeda motor\PYZsq{}}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{bus\PYZsq{}}\PY{p}{)}
+\PY{n}{kendaraan}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{enumerate*}
+\item 'mobil'
+\item 'sepeda motor'
+\item 'bus'
+\end{enumerate*}
+
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{class}\PY{p}{(}\PY{n}{kendaraan}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    'character'
+
+    
+    prioritas tipe data:
+
+characters \textgreater{} numeric \textgreater{} integer \textgreater{}
+logical
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{kendaraan} \PY{o}{\PYZlt{}\PYZhy{}} \PY{n+nf}{c}\PY{p}{(}\PY{l+m}{3}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{sepeda motor\PYZsq{}}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{bus\PYZsq{}}\PY{p}{)}
+\PY{n}{kendaraan} \PY{c+c1}{\PYZsh{} 3 dikonversi ke character}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{enumerate*}
+\item '3'
+\item 'sepeda motor'
+\item 'bus'
+\end{enumerate*}
+
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{num} \PY{o}{\PYZlt{}\PYZhy{}} \PY{n+nf}{c}\PY{p}{(}\PY{l+m}{1L}\PY{p}{,} \PY{l+m}{1.5}\PY{p}{,} \PY{l+m}{2}\PY{p}{)}
+\PY{n}{num}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{enumerate*}
+\item 1
+\item 1.5
+\item 2
+\end{enumerate*}
+
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{class}\PY{p}{(}\PY{n}{num}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    'numeric'
+
+    
+    \hypertarget{mendefinisikan-vektor}{%
+\subsubsection{Mendefinisikan vektor}\label{mendefinisikan-vektor}}
+
+    \hypertarget{menggunakan}{%
+\paragraph{\texorpdfstring{Menggunakan
+\texttt{:}}{Menggunakan :}}\label{menggunakan}}
+
+    Sintaks \(\rightarrow\) \texttt{awal:akhir}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{19}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{x} \PY{o}{\PYZlt{}\PYZhy{}} \PY{l+m}{1}\PY{o}{:}\PY{l+m}{7}
+\PY{n}{x}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{enumerate*}
+\item 1
+\item 2
+\item 3
+\item 4
+\item 5
+\item 6
+\item 7
+\end{enumerate*}
+
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{20}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{x} \PY{o}{\PYZlt{}\PYZhy{}} \PY{l+m}{2} \PY{o}{:} \PY{l+m}{\PYZhy{}2}
+\PY{n}{x}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{enumerate*}
+\item 2
+\item 1
+\item 0
+\item -1
+\item -2
+\end{enumerate*}
+
+
+    
+    \hypertarget{menggunakan-fungsi-seq}{%
+\subsubsection{\texorpdfstring{Menggunakan fungsi
+\texttt{seq()}}{Menggunakan fungsi seq()}}\label{menggunakan-fungsi-seq}}
+
+    Sintaks \(\rightarrow\) \texttt{seq(from,\ to,\ by,\ length.out)}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \texttt{from}: awal
+\item
+  \texttt{to} : akhir
+\item
+  \texttt{by} : peningkatan (secara default 1).
+\item
+  \texttt{length.out}: panjang sekuen.
+\end{enumerate}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{seq}\PY{p}{(}\PY{l+m}{5}\PY{p}{,}\PY{l+m}{10}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{enumerate*}
+\item 5
+\item 6
+\item 7
+\item 8
+\item 9
+\item 10
+\end{enumerate*}
+
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{22}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{seq}\PY{p}{(}\PY{n}{from} \PY{o}{=} \PY{l+m}{0}\PY{p}{,} \PY{n}{to} \PY{o}{=} \PY{l+m}{10}\PY{p}{,} \PY{n}{by} \PY{o}{=} \PY{l+m}{2}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{enumerate*}
+\item 0
+\item 2
+\item 4
+\item 6
+\item 8
+\item 10
+\end{enumerate*}
+
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{23}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{seq}\PY{p}{(}\PY{n}{from} \PY{o}{=} \PY{l+m}{1}\PY{p}{,} \PY{n}{to} \PY{o}{=} \PY{l+m}{3}\PY{p}{,} \PY{n}{length.out} \PY{o}{=} \PY{l+m}{5}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} dibagi jadi 5 bag. dgn jarak yg sama}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{enumerate*}
+\item 1
+\item 1.5
+\item 2
+\item 2.5
+\item 3
+\end{enumerate*}
+
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{24}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{seq}\PY{p}{(}\PY{n}{from}\PY{o}{=}\PY{l+m}{0}\PY{p}{,} \PY{n}{to}\PY{o}{=}\PY{l+m}{20}\PY{p}{,} \PY{n}{length.out} \PY{o}{=} \PY{l+m}{5}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{enumerate*}
+\item 0
+\item 5
+\item 10
+\item 15
+\item 20
+\end{enumerate*}
+
+
+    
+    Contoh lainnya:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{25}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{x} \PY{o}{\PYZlt{}\PYZhy{}} \PY{l+m}{1}\PY{o}{:}\PY{l+m}{8}
+\PY{n}{x}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{enumerate*}
+\item 1
+\item 2
+\item 3
+\item 4
+\item 5
+\item 6
+\item 7
+\item 8
+\end{enumerate*}
+
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{26}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{x} \PY{o}{\PYZlt{}\PYZhy{}} \PY{n+nf}{seq}\PY{p}{(}\PY{l+m}{1}\PY{p}{,}\PY{l+m}{8}\PY{p}{)}
+\PY{n}{x}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{enumerate*}
+\item 1
+\item 2
+\item 3
+\item 4
+\item 5
+\item 6
+\item 7
+\item 8
+\end{enumerate*}
+
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{27}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{x} \PY{o}{\PYZlt{}\PYZhy{}} \PY{n+nf}{seq}\PY{p}{(}\PY{l+m}{1}\PY{p}{,}\PY{l+m}{8}\PY{p}{,} \PY{n}{by}\PY{o}{=}\PY{l+m}{2}\PY{p}{)}
+\PY{n}{x}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{enumerate*}
+\item 1
+\item 3
+\item 5
+\item 7
+\end{enumerate*}
+
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{28}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{x} \PY{o}{\PYZlt{}\PYZhy{}} \PY{n+nf}{seq}\PY{p}{(}\PY{l+m}{1}\PY{p}{,}\PY{l+m}{8}\PY{p}{,} \PY{n}{length.out} \PY{o}{=} \PY{l+m}{10}\PY{p}{)}
+\PY{n}{x}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{enumerate*}
+\item 1
+\item 1.77777777777778
+\item 2.55555555555556
+\item 3.33333333333333
+\item 4.11111111111111
+\item 4.88888888888889
+\item 5.66666666666667
+\item 6.44444444444444
+\item 7.22222222222222
+\item 8
+\end{enumerate*}
+
+
+    
+    \hypertarget{operator}{%
+\subsubsection{Operator}\label{operator}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{29}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{v} \PY{o}{\PYZlt{}\PYZhy{}} \PY{l+m}{1}\PY{o}{:}\PY{l+m}{3}
+\PY{n}{w} \PY{o}{\PYZlt{}\PYZhy{}} \PY{l+m}{4}\PY{o}{:}\PY{l+m}{6}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{30}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{print}\PY{p}{(}\PY{n}{v}\PY{p}{)}
+\PY{n+nf}{print}\PY{p}{(}\PY{n}{w}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[1] 1 2 3
+[1] 4 5 6
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{31}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{v} \PY{o}{\PYZhy{}} \PY{n}{w}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{enumerate*}
+\item -3
+\item -3
+\item -3
+\end{enumerate*}
+
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{32}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{v} \PY{o}{+} \PY{n}{w}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{enumerate*}
+\item 5
+\item 7
+\item 9
+\end{enumerate*}
+
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{33}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{v} \PY{o}{*} \PY{n}{w}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{enumerate*}
+\item 4
+\item 10
+\item 18
+\end{enumerate*}
+
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{34}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{v} \PY{o}{/} \PY{n}{w}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{enumerate*}
+\item 0.25
+\item 0.4
+\item 0.5
+\end{enumerate*}
+
+
+    
+    Operator aritmatika:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{+} : penjumlahan
+\item
+  \texttt{-} : pengurangan
+\item
+  \texttt{*} : perkalian
+\item
+  \texttt{\%\%} : sisa bagi (remainder)
+\item
+  \texttt{\^{}} : pemangkatan
+\end{itemize}
+
+    Operator relasi: * \texttt{\textless{}} : lebih kecil *
+\texttt{\textgreater{}} : lebih besar * \texttt{==} : sama dengan
+(operator kesamaan) * \texttt{\textless{}=} : lebih kecil sama dengan *
+\texttt{\textgreater{}=} : lebih besar sama dengan * \texttt{!=} : tidak
+sama
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{35}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{v} \PY{o}{\PYZlt{}\PYZhy{}} \PY{n+nf}{c}\PY{p}{(}\PY{l+m}{1}\PY{p}{,}\PY{l+m}{2}\PY{p}{,}\PY{l+m}{3}\PY{p}{)}
+\PY{n}{w} \PY{o}{\PYZlt{}\PYZhy{}} \PY{l+m}{4}\PY{o}{:}\PY{l+m}{6}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{36}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{v} \PY{o}{\PYZgt{}} \PY{n}{w} \PY{c+c1}{\PYZsh{} bersifat element\PYZhy{}wise}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{enumerate*}
+\item FALSE
+\item FALSE
+\item FALSE
+\end{enumerate*}
+
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{37}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{v} \PY{o}{!=} \PY{n}{w}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{enumerate*}
+\item TRUE
+\item TRUE
+\item TRUE
+\end{enumerate*}
+
+
+    
+    \hypertarget{mengakses-elemen-vektor}{%
+\subsubsection{Mengakses elemen vektor}\label{mengakses-elemen-vektor}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{38}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{A} \PY{o}{\PYZlt{}\PYZhy{}} \PY{n+nf}{seq}\PY{p}{(}\PY{l+m}{2}\PY{p}{,}\PY{l+m}{10}\PY{p}{,} \PY{n}{by}\PY{o}{=}\PY{l+m}{2}\PY{p}{)}
+\PY{n}{A}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{enumerate*}
+\item 2
+\item 4
+\item 6
+\item 8
+\item 10
+\end{enumerate*}
+
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{39}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{A}\PY{p}{[}\PY{n+nf}{c}\PY{p}{(}\PY{l+m}{1}\PY{p}{,}\PY{l+m}{2}\PY{p}{,}\PY{l+m}{3}\PY{p}{)}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{enumerate*}
+\item 2
+\item 4
+\item 6
+\end{enumerate*}
+
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{40}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{A}\PY{p}{[}\PY{l+m}{1}\PY{o}{:}\PY{l+m}{3}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{enumerate*}
+\item 2
+\item 4
+\item 6
+\end{enumerate*}
+
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{41}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{A}\PY{p}{[}\PY{n+nf}{c}\PY{p}{(}\PY{l+m}{\PYZhy{}1}\PY{p}{)}\PY{p}{]} \PY{c+c1}{\PYZsh{} tanpa indeks 1}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{enumerate*}
+\item 4
+\item 6
+\item 8
+\item 10
+\end{enumerate*}
+
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{42}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{A}\PY{p}{[}\PY{n+nf}{c}\PY{p}{(}\PY{l+m}{\PYZhy{}1}\PY{p}{,}\PY{l+m}{\PYZhy{}2}\PY{p}{)}\PY{p}{]} \PY{c+c1}{\PYZsh{} tanpa indeks 1 dan 2}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{enumerate*}
+\item 6
+\item 8
+\item 10
+\end{enumerate*}
+
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{43}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{A}\PY{p}{[}\PY{n+nf}{c}\PY{p}{(}\PY{l+m}{\PYZhy{}1}\PY{p}{,}\PY{l+m}{\PYZhy{}2}\PY{p}{,}\PY{l+m}{\PYZhy{}3}\PY{p}{)}\PY{p}{]} \PY{c+c1}{\PYZsh{} tanpa indeks 1,2,dan 3}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{enumerate*}
+\item 8
+\item 10
+\end{enumerate*}
+
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{44}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{A}\PY{p}{[}\PY{n+nf}{c}\PY{p}{(}\PY{k+kc}{TRUE}\PY{p}{,} \PY{k+kc}{FALSE}\PY{p}{,} \PY{k+kc}{TRUE}\PY{p}{,} \PY{k+kc}{TRUE}\PY{p}{,} \PY{k+kc}{FALSE}\PY{p}{)}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{enumerate*}
+\item 2
+\item 6
+\item 8
+\end{enumerate*}
+
+
+    
+    \begin{itemize}
+\item
+  Kita dapat menggunakan \texttt{{[}{]}} untuk mengakses elemen vektor
+  (\emph{indexing} dimulai dari \texttt{1}).
+\item
+  Nilai negatif digunakan untuk membuang elemen pada indeks yang tidak
+  dikehendaki.
+\item
+  Nilai - nilai Boolean, \texttt{TRUE} dan \texttt{FALSE} juga dapat
+  digunakan untuk pengindeksan vektor.
+\end{itemize}
+
+    \hypertarget{mendefinisikan-matriks}{%
+\subsubsection{Mendefinisikan matriks}\label{mendefinisikan-matriks}}
+
+    \[
+A_{m,n} = 
+\begin{pmatrix}
+a_{1,1} & a_{1,2} & \cdots & a_{1,n} \\
+a_{2,1} & a_{2,2} & \cdots & a_{2,n} \\
+\vdots  & \vdots  & \ddots & \vdots  \\
+a_{m,1} & a_{m,2} & \cdots & a_{m,n} 
+\end{pmatrix}
+\]
+
+    Sintaks : \texttt{matrix(data,\ nrow,\ ncol,\ byrow,\ dimnames)}
+
+\texttt{data}: elemen - elemen di dalam matriks,
+
+\texttt{nrow}: jumlah baris,
+
+\texttt{ncols}: jumlah kolom,
+
+\texttt{byrow}: Jika \texttt{TRUE}, maka elemen - elemen matriks akan
+disusun berdasarkan kolom
+
+\texttt{dimnames}: Nama yg ditugaskan pada baris dan kolom.
+
+contoh:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{45}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{matrix}\PY{p}{(}\PY{l+m}{1}\PY{o}{:}\PY{l+m}{9}\PY{p}{,} \PY{n}{nrow}\PY{o}{=}\PY{l+m}{3}\PY{p}{,} \PY{n}{ncol}\PY{o}{=}\PY{l+m}{3}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    A matrix: 3 × 3 of type int
+\begin{tabular}{lll}
+	 1 & 4 & 7\\
+	 2 & 5 & 8\\
+	 3 & 6 & 9\\
+\end{tabular}
+
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{46}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{matrix}\PY{p}{(}\PY{l+m}{1}\PY{o}{:}\PY{l+m}{9}\PY{p}{,} \PY{n}{nrow}\PY{o}{=}\PY{l+m}{3}\PY{p}{,} \PY{n}{ncol}\PY{o}{=}\PY{l+m}{3}\PY{p}{,} \PY{n}{byrow}\PY{o}{=}\PY{k+kc}{TRUE}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    A matrix: 3 × 3 of type int
+\begin{tabular}{lll}
+	 1 & 2 & 3\\
+	 4 & 5 & 6\\
+	 7 & 8 & 9\\
+\end{tabular}
+
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{47}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{baris} \PY{o}{\PYZlt{}\PYZhy{}} \PY{n+nf}{c}\PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{baris1\PYZsq{}}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{baris2\PYZsq{}}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{baris3\PYZsq{}}\PY{p}{)}
+\PY{n}{kolom} \PY{o}{\PYZlt{}\PYZhy{}} \PY{n+nf}{c}\PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{kolom1\PYZsq{}}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{kolom2\PYZsq{}}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{kolom3\PYZsq{}}\PY{p}{)}
+
+\PY{n+nf}{matrix}\PY{p}{(}\PY{l+m}{1}\PY{o}{:}\PY{l+m}{9}\PY{p}{,} \PY{n}{nrow}\PY{o}{=}\PY{l+m}{3}\PY{p}{,} \PY{n}{ncol}\PY{o}{=}\PY{l+m}{3}\PY{p}{,} \PY{n}{byrow}\PY{o}{=}\PY{k+kc}{FALSE}\PY{p}{,} \PY{n}{dimnames} \PY{o}{=} \PY{n+nf}{list}\PY{p}{(}\PY{n}{baris}\PY{p}{,}\PY{n}{kolom}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    A matrix: 3 × 3 of type int
+\begin{tabular}{r|lll}
+  & kolom1 & kolom2 & kolom3\\
+\hline
+	baris1 & 1 & 4 & 7\\
+	baris2 & 2 & 5 & 8\\
+	baris3 & 3 & 6 & 9\\
+\end{tabular}
+
+
+    
+    \hypertarget{mengakses-elemen-matriks}{%
+\subsubsection{Mengakses elemen
+matriks}\label{mengakses-elemen-matriks}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{48}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{M} \PY{o}{=} \PY{n+nf}{matrix}\PY{p}{(}\PY{l+m}{1}\PY{o}{:}\PY{l+m}{9}\PY{p}{,} \PY{n}{nrow}\PY{o}{=}\PY{l+m}{3}\PY{p}{,} \PY{n}{ncol}\PY{o}{=}\PY{l+m}{3}\PY{p}{)}
+\PY{n}{M}
+\end{Verbatim}
+\end{tcolorbox}
+
+    A matrix: 3 × 3 of type int
+\begin{tabular}{lll}
+	 1 & 4 & 7\\
+	 2 & 5 & 8\\
+	 3 & 6 & 9\\
+\end{tabular}
+
+
+    
+    Sintaks: \texttt{M{[}baris,\ kolom{]}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{49}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{M}\PY{p}{[}\PY{l+m}{1}\PY{p}{,}\PY{l+m}{1}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    1
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{50}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{M}\PY{p}{[}\PY{p}{,}\PY{l+m}{1}\PY{p}{]} \PY{c+c1}{\PYZsh{} kolom 1}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{enumerate*}
+\item 1
+\item 2
+\item 3
+\end{enumerate*}
+
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{51}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{bar} \PY{o}{\PYZlt{}\PYZhy{}} \PY{n+nf}{c}\PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{b1\PYZsq{}}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{b2\PYZsq{}}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{b3\PYZsq{}}\PY{p}{)}
+\PY{n}{kol} \PY{o}{\PYZlt{}\PYZhy{}} \PY{n+nf}{c}\PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{k1\PYZsq{}}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{k2\PYZsq{}}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{k3\PYZsq{}}\PY{p}{)}
+
+\PY{n}{M} \PY{o}{\PYZlt{}\PYZhy{}} \PY{n+nf}{matrix}\PY{p}{(}\PY{l+m}{1}\PY{o}{:}\PY{l+m}{9}\PY{p}{,} \PY{n}{nrow}\PY{o}{=}\PY{l+m}{3}\PY{p}{,} \PY{n}{ncol}\PY{o}{=}\PY{l+m}{3}\PY{p}{,} \PY{n}{dimnames}\PY{o}{=}\PY{n+nf}{list}\PY{p}{(}\PY{n}{bar}\PY{p}{,}\PY{n}{kol}\PY{p}{)}\PY{p}{)}
+\PY{n}{M}
+\end{Verbatim}
+\end{tcolorbox}
+
+    A matrix: 3 × 3 of type int
+\begin{tabular}{r|lll}
+  & k1 & k2 & k3\\
+\hline
+	b1 & 1 & 4 & 7\\
+	b2 & 2 & 5 & 8\\
+	b3 & 3 & 6 & 9\\
+\end{tabular}
+
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{52}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{M}\PY{p}{[}\PY{l+s}{\PYZsq{}}\PY{l+s}{b1\PYZsq{}}\PY{p}{,} \PY{p}{]} \PY{c+c1}{\PYZsh{} baris 1}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{description*}
+\item[k1] 1
+\item[k2] 4
+\item[k3] 7
+\end{description*}
+
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{53}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{M}\PY{p}{[}\PY{l+m}{1}\PY{p}{,}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{description*}
+\item[k1] 1
+\item[k2] 4
+\item[k3] 7
+\end{description*}
+
+
+    
+    \hypertarget{dataframe}{%
+\subsubsection{DataFrame}\label{dataframe}}
+
+    DataFrame adalah suatu tabel atau struktur berbentuk menyerupai array
+dua dimensi, di mana setiap kolomnya menyimpan data dari satu variabel
+dan setiap barisnya menyimpan data untuk suatu ``titik'' data yang sama
+dengan variabel yang berbeda - beda. Ibaratnya seperti spreadsheet MS
+Excel.
+
+    Sintaks: \texttt{data.frame(\#data)}
+
+Contoh:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{54}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{nama} \PY{o}{\PYZlt{}\PYZhy{}} \PY{n+nf}{c}\PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{Sandy\PYZsq{}}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{Evelyn\PYZsq{}}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{Brenda\PYZsq{}}\PY{p}{)}
+\PY{n}{umur} \PY{o}{\PYZlt{}\PYZhy{}} \PY{n+nf}{c}\PY{p}{(}\PY{l+m}{43}\PY{p}{,} \PY{l+m}{23}\PY{p}{,} \PY{l+m}{45}\PY{p}{)}
+\PY{n+nf}{data.frame}\PY{p}{(}\PY{n}{nama}\PY{p}{,}\PY{n}{umur}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    A data.frame: 3 × 2
+\begin{tabular}{ll}
+ nama & umur\\
+ <fct> & <dbl>\\
+\hline
+	 Sandy  & 43\\
+	 Evelyn & 23\\
+	 Brenda & 45\\
+\end{tabular}
+
+
+    
+    \hypertarget{mengakses-dataframe}{%
+\paragraph{Mengakses DataFrame}\label{mengakses-dataframe}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{55}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{nama} \PY{o}{\PYZlt{}\PYZhy{}} \PY{n+nf}{c}\PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{Sandy\PYZsq{}}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{Evelyn\PYZsq{}}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{Brenda\PYZsq{}}\PY{p}{)}
+\PY{n}{umur} \PY{o}{\PYZlt{}\PYZhy{}} \PY{n+nf}{c}\PY{p}{(}\PY{l+m}{43}\PY{p}{,} \PY{l+m}{23}\PY{p}{,} \PY{l+m}{45}\PY{p}{)}
+\PY{n}{gaji} \PY{o}{\PYZlt{}\PYZhy{}} \PY{n+nf}{c}\PY{p}{(}\PY{l+m}{1000000}\PY{p}{,} \PY{l+m}{9000000}\PY{p}{,} \PY{l+m}{2000000}\PY{p}{)}
+
+\PY{n}{D} \PY{o}{\PYZlt{}\PYZhy{}} \PY{n+nf}{data.frame}\PY{p}{(}\PY{n}{nama}\PY{p}{,}\PY{n}{umur}\PY{p}{,} \PY{n}{gaji}\PY{p}{)}
+\PY{n}{D}
+\end{Verbatim}
+\end{tcolorbox}
+
+    A data.frame: 3 × 3
+\begin{tabular}{lll}
+ nama & umur & gaji\\
+ <fct> & <dbl> & <dbl>\\
+\hline
+	 Sandy  & 43 & 1e+06\\
+	 Evelyn & 23 & 9e+06\\
+	 Brenda & 45 & 2e+06\\
+\end{tabular}
+
+
+    
+    Cara pertama:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{56}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{D}\PY{o}{\PYZdl{}}\PY{n}{nama} \PY{c+c1}{\PYZsh{} akses kolom nama dari dataframe D}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{enumerate*}
+\item Sandy
+\item Evelyn
+\item Brenda
+\end{enumerate*}
+
+\emph{Levels}: \begin{enumerate*}
+\item 'Brenda'
+\item 'Evelyn'
+\item 'Sandy'
+\end{enumerate*}
+
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{57}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{D}\PY{o}{\PYZdl{}}\PY{n}{nama}\PY{p}{[}\PY{l+m}{1}\PY{p}{]} \PY{c+c1}{\PYZsh{} baris pertama dari nama}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Sandy
+\emph{Levels}: \begin{enumerate*}
+\item 'Brenda'
+\item 'Evelyn'
+\item 'Sandy'
+\end{enumerate*}
+
+
+    
+    Cara kedua:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{58}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{D}\PY{p}{[}\PY{l+m}{1}\PY{p}{,}\PY{p}{]} \PY{c+c1}{\PYZsh{} mengakses baris pertama}
+\end{Verbatim}
+\end{tcolorbox}
+
+    A data.frame: 1 × 3
+\begin{tabular}{r|lll}
+  & nama & umur & gaji\\
+  & <fct> & <dbl> & <dbl>\\
+\hline
+	1 & Sandy & 43 & 1e+06\\
+\end{tabular}
+
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{59}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{D}\PY{p}{[}\PY{n+nf}{c}\PY{p}{(}\PY{l+m}{1}\PY{p}{,}\PY{l+m}{2}\PY{p}{)}\PY{p}{,}\PY{p}{]} \PY{c+c1}{\PYZsh{} akses seluruh kolom baris 1 \PYZhy{} 2}
+\end{Verbatim}
+\end{tcolorbox}
+
+    A data.frame: 2 × 3
+\begin{tabular}{r|lll}
+  & nama & umur & gaji\\
+  & <fct> & <dbl> & <dbl>\\
+\hline
+	1 & Sandy  & 43 & 1e+06\\
+	2 & Evelyn & 23 & 9e+06\\
+\end{tabular}
+
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{60}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{D}\PY{o}{\PYZdl{}}\PY{n}{gaji} \PY{o}{\PYZlt{}\PYZhy{}} \PY{n}{D}\PY{o}{\PYZdl{}}\PY{n}{gaji} \PY{o}{/}\PY{p}{(}\PY{l+m}{1e6}\PY{p}{)} \PY{c+c1}{\PYZsh{} membagi gaji sebanyak 1jt dan menugaskan ulang ke dataframe}
+\PY{n}{D}
+\end{Verbatim}
+\end{tcolorbox}
+
+    A data.frame: 3 × 3
+\begin{tabular}{lll}
+ nama & umur & gaji\\
+ <fct> & <dbl> & <dbl>\\
+\hline
+	 Sandy  & 43 & 1\\
+	 Evelyn & 23 & 9\\
+	 Brenda & 45 & 2\\
+\end{tabular}
+
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{61}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} cara dapat intisari dataframe:}
+
+\PY{n+nf}{summary}\PY{p}{(}\PY{n}{D}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    
+    \begin{verbatim}
+     nama        umur         gaji    
+ Brenda:1   Min.   :23   Min.   :1.0  
+ Evelyn:1   1st Qu.:33   1st Qu.:1.5  
+ Sandy :1   Median :43   Median :2.0  
+            Mean   :37   Mean   :4.0  
+            3rd Qu.:44   3rd Qu.:5.5  
+            Max.   :45   Max.   :9.0  
+    \end{verbatim}
+
+    
+    \hypertarget{array}{%
+\subsubsection{Array}\label{array}}
+
+    Array merupakan koleksi elemen - elemen multidimensional yang mempunyai
+tipe data seragam.
+
+Sintaks: \texttt{array(data,\ dim,\ dimnames)}
+
+Contoh:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{62}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{print}\PY{p}{(}\PY{n+nf}{array}\PY{p}{(}\PY{n}{data}\PY{o}{=}\PY{n+nf}{c}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{who\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{am\PYZsq{}}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{I\PYZsq{}}\PY{p}{)}\PY{p}{,} \PY{n}{dim} \PY{o}{=} \PY{n+nf}{c}\PY{p}{(}\PY{l+m}{3}\PY{p}{,}\PY{l+m}{3}\PY{p}{,}\PY{l+m}{2}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} dim =\PYZgt{} 3 baris, 3 kolom, 2 level (2 matriks)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+, , 1
+
+     [,1]  [,2]  [,3]
+[1,] "who" "who" "who"
+[2,] "am"  "am"  "am"
+[3,] "I"   "I"   "I"
+
+, , 2
+
+     [,1]  [,2]  [,3]
+[1,] "who" "who" "who"
+[2,] "am"  "am"  "am"
+[3,] "I"   "I"   "I"
+
+    \end{Verbatim}
+
+    Harus diingat bahwa \emph{array} harus punya tipe data \textbf{YANG
+SAMA}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{63}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{bar} \PY{o}{\PYZlt{}\PYZhy{}} \PY{n+nf}{c}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{B1\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{B2\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{B3\PYZdq{}}\PY{p}{)}
+\PY{n}{kol} \PY{o}{\PYZlt{}\PYZhy{}} \PY{n+nf}{c}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{K1\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{K2\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{K3\PYZdq{}}\PY{p}{)}
+\PY{n}{mat} \PY{o}{\PYZlt{}\PYZhy{}} \PY{n+nf}{c}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{M1\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{M2\PYZdq{}}\PY{p}{)}
+
+\PY{n+nf}{print}\PY{p}{(}\PY{n+nf}{array}\PY{p}{(}\PY{n}{data}\PY{o}{=}\PY{n+nf}{c}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{halo\PYZdq{}}\PY{p}{,}\PY{l+s}{\PYZdq{}}\PY{l+s}{hai\PYZdq{}}\PY{p}{,}\PY{l+s}{\PYZdq{}}\PY{l+s}{hoi\PYZdq{}}\PY{p}{)}\PY{p}{,} \PY{n}{dim}\PY{o}{=}\PY{n+nf}{c}\PY{p}{(}\PY{l+m}{3}\PY{p}{,}\PY{l+m}{3}\PY{p}{,}\PY{l+m}{2}\PY{p}{)}\PY{p}{,} \PY{n}{dimnames}\PY{o}{=}\PY{n+nf}{list}\PY{p}{(}\PY{n}{bar}\PY{p}{,}\PY{n}{kol}\PY{p}{,}\PY{n}{mat}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+, , M1
+
+   K1     K2     K3
+B1 "halo" "halo" "halo"
+B2 "hai"  "hai"  "hai"
+B3 "hoi"  "hoi"  "hoi"
+
+, , M2
+
+   K1     K2     K3
+B1 "halo" "halo" "halo"
+B2 "hai"  "hai"  "hai"
+B3 "hoi"  "hoi"  "hoi"
+
+    \end{Verbatim}
+
+    \hypertarget{mengakses-array}{%
+\paragraph{Mengakses array}\label{mengakses-array}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{64}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{bar} \PY{o}{\PYZlt{}\PYZhy{}} \PY{n+nf}{c}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{B1\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{B2\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{B3\PYZdq{}}\PY{p}{)}
+\PY{n}{kol} \PY{o}{\PYZlt{}\PYZhy{}} \PY{n+nf}{c}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{K1\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{K2\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{K3\PYZdq{}}\PY{p}{)}
+\PY{n}{mat} \PY{o}{\PYZlt{}\PYZhy{}} \PY{n+nf}{c}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{M1\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{M2\PYZdq{}}\PY{p}{)}
+
+\PY{n}{A} \PY{o}{\PYZlt{}\PYZhy{}} \PY{n+nf}{array}\PY{p}{(}\PY{n}{data}\PY{o}{=}\PY{n+nf}{c}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{who\PYZdq{}}\PY{p}{,}\PY{l+s}{\PYZdq{}}\PY{l+s}{am\PYZdq{}}\PY{p}{,}\PY{l+s}{\PYZdq{}}\PY{l+s}{I\PYZdq{}}\PY{p}{)}\PY{p}{,} \PY{n}{dim}\PY{o}{=}\PY{n+nf}{c}\PY{p}{(}\PY{l+m}{3}\PY{p}{,}\PY{l+m}{3}\PY{p}{,}\PY{l+m}{2}\PY{p}{)}\PY{p}{,} \PY{n}{dimnames}\PY{o}{=}\PY{n+nf}{list}\PY{p}{(}\PY{n}{bar}\PY{p}{,}\PY{n}{kol}\PY{p}{,}\PY{n}{mat}\PY{p}{)}\PY{p}{)}
+\PY{n+nf}{print}\PY{p}{(}\PY{n}{A}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+, , M1
+
+   K1    K2    K3
+B1 "who" "who" "who"
+B2 "am"  "am"  "am"
+B3 "I"   "I"   "I"
+
+, , M2
+
+   K1    K2    K3
+B1 "who" "who" "who"
+B2 "am"  "am"  "am"
+B3 "I"   "I"   "I"
+
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{65}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{A}\PY{p}{[}\PY{l+m}{1}\PY{p}{,}\PY{l+m}{1}\PY{p}{,}\PY{l+m}{1}\PY{p}{]} \PY{c+c1}{\PYZsh{} A[baris, kolom, matriks]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    'who'
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{66}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{A}\PY{p}{[}\PY{l+m}{1}\PY{p}{,}\PY{l+m}{1}\PY{p}{,}\PY{p}{]} \PY{c+c1}{\PYZsh{} baris 1, kolom 1, semua matriks}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{description*}
+\item[M1] 'who'
+\item[M2] 'who'
+\end{description*}
+
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{67}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{A}\PY{p}{[}\PY{l+m}{1}\PY{p}{,}\PY{p}{,}\PY{l+m}{1}\PY{p}{]} \PY{c+c1}{\PYZsh{} baris 1, semua kolom, matriks 1}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{description*}
+\item[K1] 'who'
+\item[K2] 'who'
+\item[K3] 'who'
+\end{description*}
+
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{68}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{A}\PY{p}{[}\PY{l+s}{\PYZdq{}}\PY{l+s}{B1\PYZdq{}}\PY{p}{,}\PY{p}{,}\PY{p}{]} \PY{c+c1}{\PYZsh{} baris B1, semua kolom, semua matriks}
+\end{Verbatim}
+\end{tcolorbox}
+
+    A matrix: 3 × 2 of type chr
+\begin{tabular}{r|ll}
+  & M1 & M2\\
+\hline
+	K1 & who & who\\
+	K2 & who & who\\
+	K3 & who & who\\
+\end{tabular}
+
+
+    
+    \hypertarget{mengenal-list}{%
+\subsubsection{Mengenal list}\label{mengenal-list}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{69}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{L} \PY{o}{\PYZlt{}\PYZhy{}} \PY{n+nf}{list}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{PNP\PYZdq{}}\PY{p}{,} \PY{l+m}{1}\PY{o}{:}\PY{l+m}{3}\PY{p}{,} \PY{k+kc}{TRUE}\PY{p}{,} \PY{n+nf}{matrix}\PY{p}{(}\PY{l+m}{1}\PY{o}{:}\PY{l+m}{6}\PY{p}{,} \PY{n}{nrow}\PY{o}{=}\PY{l+m}{2}\PY{p}{)}\PY{p}{,} \PY{n+nf}{array}\PY{p}{(}\PY{l+m}{5}\PY{o}{:}\PY{l+m}{10}\PY{p}{,} \PY{n}{dim} \PY{o}{=} \PY{n+nf}{c}\PY{p}{(}\PY{l+m}{3}\PY{p}{,}\PY{l+m}{3}\PY{p}{,}\PY{l+m}{2}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n+nf}{print}\PY{p}{(}\PY{n}{L}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[1]]
+[1] "PNP"
+
+[[2]]
+[1] 1 2 3
+
+[[3]]
+[1] TRUE
+
+[[4]]
+     [,1] [,2] [,3]
+[1,]    1    3    5
+[2,]    2    4    6
+
+[[5]]
+, , 1
+
+     [,1] [,2] [,3]
+[1,]    5    8    5
+[2,]    6    9    6
+[3,]    7   10    7
+
+, , 2
+
+     [,1] [,2] [,3]
+[1,]    8    5    8
+[2,]    9    6    9
+[3,]   10    7   10
+
+
+    \end{Verbatim}
+
+    \texttt{L} memuat: karakter, vektor, boolean, matriks, array
+
+    List adalah koleksi berbagai macam struktur data
+
+    \hypertarget{mengenal-factor}{%
+\subsubsection{Mengenal factor}\label{mengenal-factor}}
+
+    \begin{itemize}
+\item
+  Digunakan untuk menyelesaikan permasalahan pengolahan data
+  \emph{string} yang seringkali bersifat \emph{memory intensive}.
+\item
+  \emph{Factor} meng-\emph{encode} \emph{string} menjadi nilai numerik.
+\item
+  Baik untuk optimisasi algoritma.
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{70}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{jenisKel} \PY{o}{\PYZlt{}\PYZhy{}} \PY{n+nf}{c}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Pria\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{Wanita\PYZdq{}}\PY{p}{)}
+\PY{n}{factorGen} \PY{o}{\PYZlt{}\PYZhy{}} \PY{n+nf}{factor}\PY{p}{(}\PY{n}{jenisKel}\PY{p}{)}
+\PY{n+nf}{print}\PY{p}{(}\PY{n}{factorGen}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[1] Pria   Wanita
+Levels: Pria Wanita
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{71}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{str}\PY{p}{(}\PY{n}{factorGen}\PY{p}{)} \PY{c+c1}{\PYZsh{} ada dua level: Pria dan Wanita}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+ Factor w/ 2 levels "Pria","Wanita": 1 2
+    \end{Verbatim}
+
+    \hypertarget{operator-penugasan}{%
+\subsection{Operator Penugasan}\label{operator-penugasan}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{72}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Kedua operator penugasan ini dapat digunakan}
+
+\PY{n}{x1} \PY{o}{=} \PY{l+m}{13}
+\PY{n}{x2} \PY{o}{\PYZlt{}\PYZhy{}} \PY{l+m}{13}
+
+\PY{n}{x1} \PY{o}{==} \PY{n}{x2}
+\end{Verbatim}
+\end{tcolorbox}
+
+    TRUE
+
+    
+    Namun harus hati - hati juga tidak setiap saat kedua operator ini dapat
+berlaku dengan sama. Misalnya:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{73}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{mean}\PY{p}{(}\PY{n}{x} \PY{o}{=} \PY{l+m}{1}\PY{o}{:}\PY{l+m}{10}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    5.5
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{74}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{x} \PY{c+c1}{\PYZsh{} variabel x hanya dapat diakses di dalam fungsi tsb (local var) (x bukan variabel yg sama)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{enumerate*}
+\item 1
+\item 1.77777777777778
+\item 2.55555555555556
+\item 3.33333333333333
+\item 4.11111111111111
+\item 4.88888888888889
+\item 5.66666666666667
+\item 6.44444444444444
+\item 7.22222222222222
+\item 8
+\end{enumerate*}
+
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{75}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{mean}\PY{p}{(}\PY{n}{x} \PY{o}{\PYZlt{}\PYZhy{}} \PY{l+m}{1}\PY{o}{:}\PY{l+m}{10}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    5.5
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{76}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{x} \PY{c+c1}{\PYZsh{} variabel x bersifat global}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{enumerate*}
+\item 1
+\item 2
+\item 3
+\item 4
+\item 5
+\item 6
+\item 7
+\item 8
+\item 9
+\item 10
+\end{enumerate*}
+
+
+    
+    Jika kita menggunakan \texttt{\textless{}-}, maka nilai tsb akan menjadi
+variabel global, sementara \texttt{=} hanya bersifat lokal.
+
+    \hypertarget{eksplorasi-data}{%
+\section{Eksplorasi data}\label{eksplorasi-data}}
+
+    Kita akan menggunakan Iris dataset dari situs
+\href{https://archive.ics.uci.edu/ml/datasets/iris}{University of
+California Irvine Machine Learning Repository}.
+
+Hal - hal penting yang harus kita catat berkaitan dengan data ini adalah
+sebagai berikut:
+
+Attribute Information:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  sepal length in cm
+\item
+  sepal width in cm
+\item
+  petal length in cm
+\item
+  petal width in cm
+\item
+  class: * Iris Setosa * Iris Versicolour * Iris Virginica
+\end{enumerate}
+
+    \hypertarget{pengolahan-data}{%
+\subsection{Pengolahan data}\label{pengolahan-data}}
+
+    \hypertarget{mengimpor-data}{%
+\subsubsection{Mengimpor data}\label{mengimpor-data}}
+
+    \hypertarget{cara-1-menggunakan-tautan-httpsarchive.ics.uci.edumlmachine-learning-databasesirisiris.data}{%
+\paragraph{Cara 1: Menggunakan tautan :
+``https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data''}\label{cara-1-menggunakan-tautan-httpsarchive.ics.uci.edumlmachine-learning-databasesirisiris.data}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{77}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{tautan} \PY{o}{\PYZlt{}\PYZhy{}} \PY{l+s}{\PYZdq{}}\PY{l+s}{https://archive.ics.uci.edu/ml/machine\PYZhy{}learning\PYZhy{}databases/iris/iris.data\PYZdq{}}
+
+\PY{n}{df} \PY{o}{\PYZlt{}\PYZhy{}} \PY{n+nf}{read.csv}\PY{p}{(}\PY{n+nf}{url}\PY{p}{(}\PY{n}{tautan}\PY{p}{)}\PY{p}{,} \PY{n}{header}\PY{o}{=}\PY{k+kc}{FALSE}\PY{p}{)} \PY{c+c1}{\PYZsh{} header nya tidak mau kita ikut sertakan}
+\PY{n+nf}{head}\PY{p}{(}\PY{n}{df}\PY{p}{)} \PY{c+c1}{\PYZsh{} 6 baris pertama}
+\end{Verbatim}
+\end{tcolorbox}
+
+    A data.frame: 6 × 5
+\begin{tabular}{r|lllll}
+  & V1 & V2 & V3 & V4 & V5\\
+  & <dbl> & <dbl> & <dbl> & <dbl> & <fct>\\
+\hline
+	1 & 5.1 & 3.5 & 1.4 & 0.2 & Iris-setosa\\
+	2 & 4.9 & 3.0 & 1.4 & 0.2 & Iris-setosa\\
+	3 & 4.7 & 3.2 & 1.3 & 0.2 & Iris-setosa\\
+	4 & 4.6 & 3.1 & 1.5 & 0.2 & Iris-setosa\\
+	5 & 5.0 & 3.6 & 1.4 & 0.2 & Iris-setosa\\
+	6 & 5.4 & 3.9 & 1.7 & 0.4 & Iris-setosa\\
+\end{tabular}
+
+
+    
+    \hypertarget{cara-2-menggunakan-pustaka}{%
+\paragraph{Cara 2: Menggunakan
+pustaka}\label{cara-2-menggunakan-pustaka}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{78}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{library}\PY{p}{(}\PY{n}{datasets}\PY{p}{)} \PY{c+c1}{\PYZsh{} iris termasuk ke dalam datasets pustaka ini}
+\PY{n}{df} \PY{o}{\PYZlt{}\PYZhy{}} \PY{n}{iris} \PY{c+c1}{\PYZsh{} langsung terimpor ke workspace kita}
+\PY{n+nf}{head}\PY{p}{(}\PY{n}{df}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    A data.frame: 6 × 5
+\begin{tabular}{r|lllll}
+  & Sepal.Length & Sepal.Width & Petal.Length & Petal.Width & Species\\
+  & <dbl> & <dbl> & <dbl> & <dbl> & <fct>\\
+\hline
+	1 & 5.1 & 3.5 & 1.4 & 0.2 & setosa\\
+	2 & 4.9 & 3.0 & 1.4 & 0.2 & setosa\\
+	3 & 4.7 & 3.2 & 1.3 & 0.2 & setosa\\
+	4 & 4.6 & 3.1 & 1.5 & 0.2 & setosa\\
+	5 & 5.0 & 3.6 & 1.4 & 0.2 & setosa\\
+	6 & 5.4 & 3.9 & 1.7 & 0.4 & setosa\\
+\end{tabular}
+
+
+    
+    \hypertarget{cara-3-mengunduh-file-secara-lokal}{%
+\paragraph{Cara 3: Mengunduh file secara
+lokal}\label{cara-3-mengunduh-file-secara-lokal}}
+
+    Pergi ke
+https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data,
+unduh filenya, pindahkan ke direktori tempat kalian bekerja (atau di
+mana pun juga boleh yang penting kalian tahu PATH -nya), jalankan:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{79}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df} \PY{o}{\PYZlt{}\PYZhy{}} \PY{n+nf}{read.csv}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{./notebooks/iris.data\PYZdq{}}\PY{p}{,} \PY{n}{header}\PY{o}{=}\PY{k+kc}{FALSE}\PY{p}{)}
+\PY{n+nf}{head}\PY{p}{(}\PY{n}{df}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    A data.frame: 6 × 5
+\begin{tabular}{r|lllll}
+  & V1 & V2 & V3 & V4 & V5\\
+  & <dbl> & <dbl> & <dbl> & <dbl> & <fct>\\
+\hline
+	1 & 5.1 & 3.5 & 1.4 & 0.2 & Iris-setosa\\
+	2 & 4.9 & 3.0 & 1.4 & 0.2 & Iris-setosa\\
+	3 & 4.7 & 3.2 & 1.3 & 0.2 & Iris-setosa\\
+	4 & 4.6 & 3.1 & 1.5 & 0.2 & Iris-setosa\\
+	5 & 5.0 & 3.6 & 1.4 & 0.2 & Iris-setosa\\
+	6 & 5.4 & 3.9 & 1.7 & 0.4 & Iris-setosa\\
+\end{tabular}
+
+
+    
+    \hypertarget{menyiapkan-data}{%
+\subsubsection{Menyiapkan data}\label{menyiapkan-data}}
+
+    \hypertarget{mengetahui-dimensi-dataframe}{%
+\paragraph{Mengetahui dimensi
+DataFrame}\label{mengetahui-dimensi-dataframe}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{80}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{dim}\PY{p}{(}\PY{n}{df}\PY{p}{)} \PY{c+c1}{\PYZsh{} baris = 150, kolom = 5}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{enumerate*}
+\item 150
+\item 5
+\end{enumerate*}
+
+
+    
+    \hypertarget{menamakan-kolom}{%
+\paragraph{Menamakan kolom}\label{menamakan-kolom}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{81}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{tail}\PY{p}{(}\PY{n}{df}\PY{p}{)} \PY{c+c1}{\PYZsh{} belum mempunyai nama kolom}
+\end{Verbatim}
+\end{tcolorbox}
+
+    A data.frame: 6 × 5
+\begin{tabular}{r|lllll}
+  & V1 & V2 & V3 & V4 & V5\\
+  & <dbl> & <dbl> & <dbl> & <dbl> & <fct>\\
+\hline
+	145 & 6.7 & 3.3 & 5.7 & 2.5 & Iris-virginica\\
+	146 & 6.7 & 3.0 & 5.2 & 2.3 & Iris-virginica\\
+	147 & 6.3 & 2.5 & 5.0 & 1.9 & Iris-virginica\\
+	148 & 6.5 & 3.0 & 5.2 & 2.0 & Iris-virginica\\
+	149 & 6.2 & 3.4 & 5.4 & 2.3 & Iris-virginica\\
+	150 & 5.9 & 3.0 & 5.1 & 1.8 & Iris-virginica\\
+\end{tabular}
+
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{82}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{colnames}\PY{p}{(}\PY{n}{df}\PY{p}{)} \PY{o}{=} \PY{n+nf}{c}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Sepal.Length\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{Sepal.Width\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{Petal.Length\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{Petal.Width\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{Species\PYZdq{}}\PY{p}{)}
+\PY{n+nf}{head}\PY{p}{(}\PY{n}{df}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    A data.frame: 6 × 5
+\begin{tabular}{r|lllll}
+  & Sepal.Length & Sepal.Width & Petal.Length & Petal.Width & Species\\
+  & <dbl> & <dbl> & <dbl> & <dbl> & <fct>\\
+\hline
+	1 & 5.1 & 3.5 & 1.4 & 0.2 & Iris-setosa\\
+	2 & 4.9 & 3.0 & 1.4 & 0.2 & Iris-setosa\\
+	3 & 4.7 & 3.2 & 1.3 & 0.2 & Iris-setosa\\
+	4 & 4.6 & 3.1 & 1.5 & 0.2 & Iris-setosa\\
+	5 & 5.0 & 3.6 & 1.4 & 0.2 & Iris-setosa\\
+	6 & 5.4 & 3.9 & 1.7 & 0.4 & Iris-setosa\\
+\end{tabular}
+
+
+    
+    \hypertarget{mengetahui-nilai-kosong}{%
+\paragraph{Mengetahui nilai kosong}\label{mengetahui-nilai-kosong}}
+
+    Dataset Iris ini contoh data yang sempurna, karena tidak terdapat nilai
+kosong, namun sebagian besar data yang kita temui di dunia nyata
+tidaklah demikian. Akan banyak sekali nilai kosongnya. Ada banyak sekali
+metode yang digunakan untuk menangani nilai - nilai kosong (mis.
+mengganti dengan nilai rata - rata, dsb), namun karena fokus kita pada
+tutorial ini hanya mengangani dataset iris, maka kita tidak akan
+membahas topik penanganan nilai kosong ini.
+
+    Nilai kosong di R ditandai dengan nilai \texttt{NA}. Untuk mengetahui
+keberadaan nilai kosong, gunakan:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{112}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{head}\PY{p}{(}\PY{n+nf}{is.na}\PY{p}{(}\PY{n}{df}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{} seluruh entri FALSE: ga ada nilai kosong}
+\end{Verbatim}
+\end{tcolorbox}
+
+    A matrix: 6 × 5 of type lgl
+\begin{tabular}{lllll}
+ Sepal.Length & Sepal.Width & Petal.Length & Petal.Width & Species\\
+\hline
+	 FALSE & FALSE & FALSE & FALSE & FALSE\\
+	 FALSE & FALSE & FALSE & FALSE & FALSE\\
+	 FALSE & FALSE & FALSE & FALSE & FALSE\\
+	 FALSE & FALSE & FALSE & FALSE & FALSE\\
+	 FALSE & FALSE & FALSE & FALSE & FALSE\\
+	 FALSE & FALSE & FALSE & FALSE & FALSE\\
+\end{tabular}
+
+
+    
+    Tapi hal di atas susah dilihat mata, maka kita gunakan:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{84}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{any}\PY{p}{(}\PY{n+nf}{is.na}\PY{p}{(}\PY{n}{df}\PY{p}{)}\PY{p}{)} 
+\PY{c+c1}{\PYZsh{} buat mengecek ke seluruh nilai ada ga yg kosong kalo ada 1 aja maka nilainya jd TRUE}
+\end{Verbatim}
+\end{tcolorbox}
+
+    FALSE
+
+    
+    Kalau mau tahu berapa jumlah nilai \texttt{NA} di dataset, gunakan:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{85}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{sum}\PY{p}{(}\PY{n+nf}{is.na}\PY{p}{(}\PY{n}{df}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    0
+
+    
+    Berikut ini contoh dataframe yang terdapat nilai kosongnya:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{86}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df1} \PY{o}{=} \PY{n+nf}{data.frame}\PY{p}{(}\PY{l+m}{1}\PY{o}{:}\PY{l+m}{4}\PY{p}{,} \PY{n+nf}{c}\PY{p}{(}\PY{l+m}{6}\PY{p}{,}\PY{l+m}{7}\PY{p}{,}\PY{k+kc}{NA}\PY{p}{,}\PY{k+kc}{NA}\PY{p}{)}\PY{p}{)}
+\PY{n}{df1}
+\end{Verbatim}
+\end{tcolorbox}
+
+    A data.frame: 4 × 2
+\begin{tabular}{ll}
+ X1.4 & c.6..7..NA..NA.\\
+ <int> & <dbl>\\
+\hline
+	 1 &  6\\
+	 2 &  7\\
+	 3 & NA\\
+	 4 & NA\\
+\end{tabular}
+
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{87}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{is.na}\PY{p}{(}\PY{n}{df1}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    A matrix: 4 × 2 of type lgl
+\begin{tabular}{ll}
+ X1.4 & c.6..7..NA..NA.\\
+\hline
+	 FALSE & FALSE\\
+	 FALSE & FALSE\\
+	 FALSE &  TRUE\\
+	 FALSE &  TRUE\\
+\end{tabular}
+
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{88}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{any}\PY{p}{(}\PY{n+nf}{is.na}\PY{p}{(}\PY{n}{df1}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    TRUE
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{89}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{sum}\PY{p}{(}\PY{n+nf}{is.na}\PY{p}{(}\PY{n}{df1}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    2
+
+    
+    \hypertarget{visualisasi-data}{%
+\subsection{Visualisasi data}\label{visualisasi-data}}
+
+    Kita akan menggunakan pustaka graphics untuk visualisasi dasar (bukan
+menggunakan ggplot2).
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{90}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{library}\PY{p}{(}\PY{n}{graphics}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Setiap kali hendak menggunakan pustaka baru, diharapkan kalian
+mengunjungi situs:
+
+https://www.rdocumentation.org/
+
+Untuk mencari petunjuk penggunaannya. Karena keunggulan R (bagi kami
+pribadi dibandingkan Python) adalah kelengkapan dokumentasinya (karena
+memang diciptakan untuk tujuan akademik???).
+
+    \hypertarget{scatterplot}{%
+\subsubsection{Scatterplot}\label{scatterplot}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{91}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{x} \PY{o}{\PYZlt{}\PYZhy{}} \PY{l+m}{\PYZhy{}4}\PY{o}{:}\PY{l+m}{4}
+\PY{n}{y} \PY{o}{\PYZlt{}\PYZhy{}} \PY{n}{x}\PY{o}{\PYZca{}}\PY{l+m}{2}
+
+\PY{n+nf}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_160_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{92}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,} \PY{n}{type}\PY{o}{=}\PY{l+s}{\PYZdq{}}\PY{l+s}{l\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_161_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{93}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,} \PY{n}{type}\PY{o}{=}\PY{l+s}{\PYZdq{}}\PY{l+s}{s\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_162_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{94}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,} \PY{n}{type}\PY{o}{=}\PY{l+s}{\PYZdq{}}\PY{l+s}{s\PYZdq{}}\PY{p}{,} \PY{n}{main}\PY{o}{=}\PY{l+s}{\PYZdq{}}\PY{l+s}{Grafik\PYZdq{}}\PY{p}{)} \PY{c+c1}{\PYZsh{} nambah judul}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_163_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{95}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,} \PY{n}{type}\PY{o}{=}\PY{l+s}{\PYZdq{}}\PY{l+s}{s\PYZdq{}}\PY{p}{,} \PY{n}{main}\PY{o}{=}\PY{l+s}{\PYZdq{}}\PY{l+s}{grafik\PYZdq{}}\PY{p}{,} \PY{n}{xlab}\PY{o}{=}\PY{l+s}{\PYZdq{}}\PY{l+s}{sumbu x\PYZdq{}}\PY{p}{,} \PY{n}{ylab}\PY{o}{=}\PY{l+s}{\PYZdq{}}\PY{l+s}{sumbu y\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_164_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{96}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{main}\PY{o}{=}\PY{l+s}{\PYZdq{}}\PY{l+s}{grafik\PYZdq{}}\PY{p}{,} \PY{n}{xlab}\PY{o}{=}\PY{l+s}{\PYZdq{}}\PY{l+s}{sumbu x\PYZdq{}}\PY{p}{,} \PY{n}{ylab}\PY{o}{=}\PY{l+s}{\PYZdq{}}\PY{l+s}{sumbu y\PYZdq{}}\PY{p}{)} \PY{c+c1}{\PYZsh{} nilai sumbu\PYZhy{}y bersifat opsional}
+\PY{c+c1}{\PYZsh{} default x = y}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_165_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{97}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{plot}\PY{p}{(}\PY{n}{df}\PY{p}{)} \PY{c+c1}{\PYZsh{} Plot seluruh dataset Iris}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_166_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{98}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Scatterplot individual}
+\PY{n+nf}{plot}\PY{p}{(}\PY{n}{df}\PY{o}{\PYZdl{}}\PY{n}{Sepal.Length}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_167_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{99}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{plot}\PY{p}{(}\PY{n}{df}\PY{o}{\PYZdl{}}\PY{n}{Sepal.Width}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_168_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Lebih lanjut, baca:
+https://www.rdocumentation.org/packages/graphics/versions/3.6.2/topics/plot.
+
+    \hypertarget{barplot}{%
+\subsubsection{Barplot}\label{barplot}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{100}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{barplot}\PY{p}{(}\PY{n}{df}\PY{o}{\PYZdl{}}\PY{n}{Sepal.Width}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_171_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{101}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{barplot}\PY{p}{(}\PY{n}{df}\PY{o}{\PYZdl{}}\PY{n}{Sepal.Width}\PY{p}{,} \PY{n}{col} \PY{o}{=} \PY{l+s}{\PYZsq{}}\PY{l+s}{red\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_172_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{102}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} jadi horizontal}
+\PY{n+nf}{barplot}\PY{p}{(}\PY{n}{df}\PY{o}{\PYZdl{}}\PY{n}{Sepal.Width}\PY{p}{,} \PY{n}{col} \PY{o}{=} \PY{l+s}{\PYZsq{}}\PY{l+s}{red\PYZsq{}}\PY{p}{,} \PY{n}{horiz}\PY{o}{=}\PY{k+kc}{TRUE}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_173_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Baca:
+https://www.rdocumentation.org/packages/graphics/versions/3.6.2/topics/barplot.
+
+    \hypertarget{boxplot}{%
+\subsubsection{Boxplot}\label{boxplot}}
+
+    Untuk lebih memahami apa itu boxplot, pembaca disarankan untuk
+mengunjungi:
+https://towardsdatascience.com/understanding-boxplots-5e2df7bcbd51.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{103}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{boxplot}\PY{p}{(}\PY{n}{df}\PY{o}{\PYZdl{}}\PY{n}{Sepal.Width}\PY{p}{,} \PY{n}{col} \PY{o}{=} \PY{l+s}{\PYZsq{}}\PY{l+s}{red\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_177_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Baca:
+https://www.rdocumentation.org/packages/graphics/versions/3.6.2/topics/boxplot.
+
+    \hypertarget{histogram}{%
+\subsubsection{Histogram}\label{histogram}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{104}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{hist}\PY{p}{(}\PY{n}{df}\PY{o}{\PYZdl{}}\PY{n}{Sepal.Width}\PY{p}{,} \PY{n}{col}\PY{o}{=}\PY{l+s}{\PYZdq{}}\PY{l+s}{red\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_180_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Baca:
+https://www.rdocumentation.org/packages/graphics/versions/3.6.2/topics/hist.
+
+    \hypertarget{sekilas-tentang-dasar-pembelajaran-mesin}{%
+\section{Sekilas tentang dasar pembelajaran
+mesin}\label{sekilas-tentang-dasar-pembelajaran-mesin}}
+
+    \hypertarget{pengantar}{%
+\subsection{Pengantar}\label{pengantar}}
+
+    Pemrograman tradisional:
+
+\begin{itemize}
+\tightlist
+\item
+  Membaca nilai x\\
+\item
+  Membaca nilai y\\
+\item
+  \texttt{jum\ =\ x\ +\ y}
+\item
+  \texttt{print(jum)}
+\end{itemize}
+
+Jika pada pembelajaran mesin tidak demikian, kita masukan nilai - nilai
+input dan output yang banyak, sehingga komputer dapat menemukan
+algoritma pemecahan masalahnya sendiri tanpa harus diperintah.
+
+Pemrograman tradisional: Data + Program \(\rightarrow\) Komputer
+\(\rightarrow\) Output
+
+Pembelajaran mesin: Data + Output \(\rightarrow\) Komputer
+\(\rightarrow\) Program
+
+\hypertarget{apa-yang-hendak-kita-lakukan-pada-sesi-ini}{%
+\subsection{Apa yang hendak kita lakukan pada sesi
+ini?}\label{apa-yang-hendak-kita-lakukan-pada-sesi-ini}}
+
+Pada sesi ini kita akan membuat model yang dapat memprediksi lebar sepal
+(\texttt{Sepal.Width}) dari dataset Iris berdasarkan panjang sepal
+(\texttt{Sepal.Length}).
+
+    \hypertarget{yuk-kita-mulai}{%
+\subsection{Yuk kita mulai!}\label{yuk-kita-mulai}}
+
+    \hypertarget{memuat-dataset}{%
+\subsection{Memuat dataset}\label{memuat-dataset}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{105}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{head}\PY{p}{(}\PY{n}{df}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    A data.frame: 6 × 5
+\begin{tabular}{r|lllll}
+  & Sepal.Length & Sepal.Width & Petal.Length & Petal.Width & Species\\
+  & <dbl> & <dbl> & <dbl> & <dbl> & <fct>\\
+\hline
+	1 & 5.1 & 3.5 & 1.4 & 0.2 & Iris-setosa\\
+	2 & 4.9 & 3.0 & 1.4 & 0.2 & Iris-setosa\\
+	3 & 4.7 & 3.2 & 1.3 & 0.2 & Iris-setosa\\
+	4 & 4.6 & 3.1 & 1.5 & 0.2 & Iris-setosa\\
+	5 & 5.0 & 3.6 & 1.4 & 0.2 & Iris-setosa\\
+	6 & 5.4 & 3.9 & 1.7 & 0.4 & Iris-setosa\\
+\end{tabular}
+
+
+    
+    \hypertarget{memisahkan-data}{%
+\subsubsection{Memisahkan data}\label{memisahkan-data}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{106}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{Sepalwidth} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{p}{,}\PY{l+s}{\PYZdq{}}\PY{l+s}{Sepal.Width\PYZdq{}}\PY{p}{]}
+\PY{n}{Sepallength} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{p}{,}\PY{l+s}{\PYZdq{}}\PY{l+s}{Sepal.Length\PYZdq{}}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{107}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{print}\PY{p}{(}\PY{n}{Sepalwidth}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+  [1] 3.5 3.0 3.2 3.1 3.6 3.9 3.4 3.4 2.9 3.1 3.7 3.4 3.0 3.0 4.0 4.4 3.9 3.5
+ [19] 3.8 3.8 3.4 3.7 3.6 3.3 3.4 3.0 3.4 3.5 3.4 3.2 3.1 3.4 4.1 4.2 3.1 3.2
+ [37] 3.5 3.1 3.0 3.4 3.5 2.3 3.2 3.5 3.8 3.0 3.8 3.2 3.7 3.3 3.2 3.2 3.1 2.3
+ [55] 2.8 2.8 3.3 2.4 2.9 2.7 2.0 3.0 2.2 2.9 2.9 3.1 3.0 2.7 2.2 2.5 3.2 2.8
+ [73] 2.5 2.8 2.9 3.0 2.8 3.0 2.9 2.6 2.4 2.4 2.7 2.7 3.0 3.4 3.1 2.3 3.0 2.5
+ [91] 2.6 3.0 2.6 2.3 2.7 3.0 2.9 2.9 2.5 2.8 3.3 2.7 3.0 2.9 3.0 3.0 2.5 2.9
+[109] 2.5 3.6 3.2 2.7 3.0 2.5 2.8 3.2 3.0 3.8 2.6 2.2 3.2 2.8 2.8 2.7 3.3 3.2
+[127] 2.8 3.0 2.8 3.0 2.8 3.8 2.8 2.8 2.6 3.0 3.4 3.1 3.0 3.1 3.1 3.1 2.7 3.2
+[145] 3.3 3.0 2.5 3.0 3.4 3.0
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{108}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{print}\PY{p}{(}\PY{n}{Sepallength}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+  [1] 5.1 4.9 4.7 4.6 5.0 5.4 4.6 5.0 4.4 4.9 5.4 4.8 4.8 4.3 5.8 5.7 5.4 5.1
+ [19] 5.7 5.1 5.4 5.1 4.6 5.1 4.8 5.0 5.0 5.2 5.2 4.7 4.8 5.4 5.2 5.5 4.9 5.0
+ [37] 5.5 4.9 4.4 5.1 5.0 4.5 4.4 5.0 5.1 4.8 5.1 4.6 5.3 5.0 7.0 6.4 6.9 5.5
+ [55] 6.5 5.7 6.3 4.9 6.6 5.2 5.0 5.9 6.0 6.1 5.6 6.7 5.6 5.8 6.2 5.6 5.9 6.1
+ [73] 6.3 6.1 6.4 6.6 6.8 6.7 6.0 5.7 5.5 5.5 5.8 6.0 5.4 6.0 6.7 6.3 5.6 5.5
+ [91] 5.5 6.1 5.8 5.0 5.6 5.7 5.7 6.2 5.1 5.7 6.3 5.8 7.1 6.3 6.5 7.6 4.9 7.3
+[109] 6.7 7.2 6.5 6.4 6.8 5.7 5.8 6.4 6.5 7.7 7.7 6.0 6.9 5.6 7.7 6.3 6.7 7.2
+[127] 6.2 6.1 6.4 7.2 7.4 7.9 6.4 6.3 6.1 7.7 6.3 6.4 6.0 6.9 6.7 6.9 5.8 6.8
+[145] 6.7 6.7 6.3 6.5 6.2 5.9
+    \end{Verbatim}
+
+    \hypertarget{visualisasi-data}{%
+\subsubsection{Visualisasi data}\label{visualisasi-data}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{109}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{plot}\PY{p}{(}\PY{n}{Sepallength}\PY{p}{,} \PY{n}{Sepalwidth}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_193_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{membangun-model-pembelajaran-mesin}{%
+\subsubsection{Membangun model pembelajaran
+mesin}\label{membangun-model-pembelajaran-mesin}}
+
+    Karena hanya untuk pengenalan dasar, kita akan menggunakan algoritma
+pembelajaran mesin paling sederhana, yakni regresi linier.
+
+    \begin{longtable}[]{@{}ll@{}}
+\toprule
+x & y\tabularnewline
+\midrule
+\endhead
+2 & 4\tabularnewline
+4 & 8\tabularnewline
+5 & 10\tabularnewline
+6 & 12\tabularnewline
+7 & 14\tabularnewline
+8 & 16\tabularnewline
+\bottomrule
+\end{longtable}
+
+    Bisa kah kalian lihat pola hubungan antara x dan y? \[y = 2x\]
+
+Maka dengan demikian kita dapat menggunakan persamaan tersebut untuk
+memprediksi nilai y untuk setiap x.
+
+    Bentuk umum: \[y = a + bx\]
+
+\[y = 2x \rightarrow A = 0, B =2\]
+
+    Regresi linier digunakan untuk mencari nilai \(a\) dan \(b\) yang paling
+mendekati persamaan analitik.
+
+    \[Y = a + bX\],
+
+di mana:
+
+\[ a = \bar{y} - b\bar{x}\]
+
+dan
+
+\[b = \text{Cov}(x,y)/\text{Var}(x)\]
+
+, di mana
+
+\[\text{Cov}(x,y) = \frac{\Sigma(x_{i} - \bar{x})(y_{i} - \bar{y})}{n}\]
+
+dan
+
+\[\sigma^2 = \frac{\Sigma(x_{i}-\bar{x})}{N}\]
+
+    Untuk penjelasan yang lebih mendetail tentang matematika di baliknya,
+disarankan untuk melihat video Khan Academy berikut ini:
+
+https://www.youtube.com/watch?v=ualmyZiPs9w
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{110}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} regresi linier = lm(y \PYZti{} x)}
+\PY{n}{model} \PY{o}{=} \PY{n+nf}{lm}\PY{p}{(}\PY{n}{Sepalwidth} \PY{o}{\PYZti{}} \PY{n}{Sepallength}\PY{p}{)}
+\PY{n}{model}
+\end{Verbatim}
+\end{tcolorbox}
+
+    
+    \begin{verbatim}
+
+Call:
+lm(formula = Sepalwidth ~ Sepallength)
+
+Coefficients:
+(Intercept)  Sepallength  
+    3.38864     -0.05727  
+
+    \end{verbatim}
+
+    
+    \[y = 3.38864 -0.05727x\],
+
+di mana:
+
+\(y\) : \texttt{Sepalwidth}
+
+\(x\) : \texttt{Sepallength}
+
+    \hypertarget{memprediksi-berdasarkan-model-yang-telah-kita-bangun}{%
+\subsubsection{Memprediksi berdasarkan model yang telah kita
+bangun}\label{memprediksi-berdasarkan-model-yang-telah-kita-bangun}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{111}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nf}{predict}\PY{p}{(}\PY{n}{model}\PY{p}{,} \PY{n+nf}{data.frame}\PY{p}{(}\PY{n}{Sepallength}\PY{o}{=}\PY{l+m}{15}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \textbf{1:} 2.52961387253063
+
+    
+    Mustinya kita harus memisahkan data menjadi \emph{train - test sets},
+tetapi karena webinar ini berfokus pada perkenalan R secara sederhana
+maka hal tersbut tidak akan dibahas di sini.
+
+    TERIMAKASIH
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
